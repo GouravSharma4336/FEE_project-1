@@ -1,6 +1,7 @@
 /**
  * QuizMaster - Assessment Arena Engine (arena.js)
- * Retains all features: live API fetching, palette navigation, timers, review breakdown, and history tracking.
+ * Dynamically extracts questions using the Open Trivia Database API (https://opentdb.com/api.php?amount=40)
+ * Features: live API fetching, category badges, palette navigation, countdown timers, review breakdown, and history tracking.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,11 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const subject = params.get('subject') || 'mixed';
   const difficulty = params.get('difficulty') || 'mixed';
-  const count = parseInt(params.get('question_count'), 10) || 10;
+  const count = parseInt(params.get('question_count'), 10) || 40;
   const timerMode = params.get('timer_mode') || 'per_question';
   const perQTime = parseInt(params.get('per_q_time'), 10) || 60;
-  const totalMinutes = parseInt(params.get('total_test_time'), 10) || 15;
-  const apiKey = params.get('api_key') || localStorage.getItem('quizapi_key') || '';
+  const totalMinutes = parseInt(params.get('total_test_time'), 10) || 25;
 
   // 2. DOM Elements
   const loadingState = document.getElementById('loadingState');
@@ -35,92 +35,134 @@ document.addEventListener('DOMContentLoaded', () => {
   let timeLeft = timerMode === 'per_question' ? perQTime : totalMinutes * 60;
   let timerId = null;
 
-  if (subjectBadge) subjectBadge.textContent = subject.replace('_', ' ').toUpperCase();
+  if (subjectBadge) {
+    subjectBadge.textContent = subject.replace('_', ' ').toUpperCase();
+  }
 
-  // 4. Fetch Questions via API with Fallbacks
+  // 4. Fetch Questions via Open Trivia DB API (https://opentdb.com/api.php?amount=40)
   async function fetchQuestions() {
+    const questionAmount = count || 40;
+
+    // Open Trivia DB category ID mapping
+    const categoryMap = {
+      computers: 18,
+      html: 18,
+      css: 18,
+      javascript: 18,
+      react: 18,
+      oops: 18,
+      logic_reasoning: 19,
+      math: 19,
+      science: 17,
+      gadgets: 30,
+      general: 9
+    };
+
+    let targetUrl = `https://opentdb.com/api.php?amount=${questionAmount}`;
+    if (categoryMap[subject]) {
+      targetUrl += `&category=${categoryMap[subject]}`;
+    }
+    if (difficulty && difficulty !== 'mixed') {
+      targetUrl += `&difficulty=${difficulty.toLowerCase()}`;
+    }
+
     try {
-      if (apiKey) {
-        // Fetch from QuizAPI.io
-        let tag = '';
-        if (subject === 'html') tag = 'HTML';
-        else if (subject === 'css') tag = 'CSS';
-        else if (subject === 'javascript') tag = 'JavaScript';
-        else if (subject === 'react') tag = 'React';
-        else if (subject === 'oops') tag = 'PHP';
+      let res = await fetch(targetUrl);
+      let data = await res.json();
 
-        let url = `https://quizapi.io/api/v1/questions?apiKey=${apiKey}&limit=${count}`;
-        if (tag) url += `&tags=${tag}`;
-        if (difficulty !== 'mixed') url += `&difficulty=${difficulty}`;
-
-        const res = await fetch(url);
-        const data = await res.json();
-
-        if (Array.isArray(data) && data.length > 0) {
-          questions = data.map(item => {
-            const opts = [];
-            let correctIdx = 0;
-            const keys = ['answer_a', 'answer_b', 'answer_c', 'answer_d'];
-            keys.forEach((k, i) => {
-              if (item.answers[k]) {
-                opts.push(item.answers[k]);
-                if (item.correct_answers[k + '_correct'] === 'true') correctIdx = opts.length - 1;
-              }
-            });
-            return {
-              question: item.question,
-              options: opts.length >= 2 ? opts : ['True', 'False'],
-              answer: correctIdx,
-              explanation: item.explanation || `Category: ${item.category || 'Tech'} | Difficulty: ${item.difficulty || 'Standard'}`
-            };
-          });
-          return startAssessment();
-        }
+      // Handle rate limit (response_code 5) with brief retry
+      if (data && data.response_code === 5) {
+        console.warn('Open Trivia DB rate-limited, waiting 2s for retry...');
+        await new Promise(r => setTimeout(r, 2000));
+        res = await fetch(targetUrl);
+        data = await res.json();
       }
 
-      // Public Live API: Open Trivia DB (Computers)
-      const diffParam = difficulty !== 'mixed' ? `&difficulty=${difficulty.toLowerCase()}` : '';
-      const fallbackUrl = `https://opentdb.com/api.php?amount=${count}&category=18${diffParam}&type=multiple`;
-      const res = await fetch(fallbackUrl);
-      const data = await res.json();
+      // If specific category/difficulty returned no results (code 1), fall back to general Open Trivia DB 40 questions
+      if ((!data || data.response_code !== 0 || !data.results || data.results.length === 0) && targetUrl !== `https://opentdb.com/api.php?amount=${questionAmount}`) {
+        console.warn('Specific Open Trivia DB filter returned empty. Falling back to general Open Trivia DB questions.');
+        res = await fetch(`https://opentdb.com/api.php?amount=${questionAmount}`);
+        data = await res.json();
+      }
 
-      if (data.results && data.results.length > 0) {
+      if (data && data.response_code === 0 && Array.isArray(data.results) && data.results.length > 0) {
         questions = data.results.map(item => {
-          const incorrect = item.incorrect_answers.map(decodeHtml);
-          const correct = decodeHtml(item.correct_answer);
-          const opts = [...incorrect, correct].sort(() => Math.random() - 0.5);
+          const cleanQuestion = decodeHtml(item.question);
+          const cleanCorrect = decodeHtml(item.correct_answer);
+          const cleanCategory = decodeHtml(item.category || 'General Knowledge');
+          const cleanDifficulty = (item.difficulty || 'medium').toUpperCase();
+
+          let opts = [];
+          if (item.type === 'boolean') {
+            opts = ['True', 'False'];
+          } else {
+            const cleanIncorrect = (item.incorrect_answers || []).map(decodeHtml);
+            opts = shuffleArray([cleanCorrect, ...cleanIncorrect]);
+          }
+
           return {
-            question: decodeHtml(item.question),
+            question: cleanQuestion,
             options: opts,
-            answer: opts.indexOf(correct),
-            explanation: `Correct Answer: ${correct} (Category: ${decodeHtml(item.category)})`
+            answer: opts.indexOf(cleanCorrect),
+            category: cleanCategory,
+            difficulty: cleanDifficulty,
+            explanation: `Correct Answer: ${cleanCorrect} (Category: ${cleanCategory} | Level: ${cleanDifficulty})`
           };
         });
+
         startAssessment();
       } else {
+        console.warn('Open Trivia DB did not return valid results. Using offline questions.');
         useOfflineQuestions();
       }
     } catch (err) {
-      console.warn('API fetch failed, using backup questions:', err);
+      console.warn('Network or Open Trivia DB API fetch failed, using backup questions:', err);
       useOfflineQuestions();
     }
   }
 
-  function useOfflineQuestions() {
-    questions = [
-      { question: "Which HTML5 tag is used to specify a navigation section?", options: ["<nav>", "<header>", "<navigate>", "<menu>"], answer: 0, explanation: "<nav> is the semantic container for primary navigation links." },
-      { question: "Which CSS property is used to create a flex container?", options: ["display: flex", "box-sizing: border-box", "position: relative", "float: left"], answer: 0, explanation: "display: flex defines a flex container for children." },
-      { question: "What is the return type of typeof NaN in JavaScript?", options: ["'number'", "'nan'", "'undefined'", "'object'"], answer: 0, explanation: "In JS, NaN is technically a numeric type representing Not-a-Number." },
-      { question: "Which React Hook performs side effects in function components?", options: ["useState", "useEffect", "useMemo", "useCallback"], answer: 1, explanation: "useEffect runs lifecycle side effects like data fetching and timers." },
-      { question: "Which OOP concept enables a class to derive features from another class?", options: ["Encapsulation", "Polymorphism", "Inheritance", "Abstraction"], answer: 2, explanation: "Inheritance allows a child class to inherit fields and methods." }
-    ];
-    startAssessment();
-  }
-
+  // Robust HTML entity decoder using browser DOM
   function decodeHtml(html) {
+    if (!html) return '';
     const txt = document.createElement('textarea');
     txt.innerHTML = html;
     return txt.value;
+  }
+
+  // Safe HTML string escaper for review rendering
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  // Fisher-Yates shuffle algorithm for un-biased option ordering
+  function shuffleArray(arr) {
+    const array = [...arr];
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  // Offline fallback questions in case internet is completely disconnected
+  function useOfflineQuestions() {
+    questions = [
+      { question: "Which HTML5 element is used to specify a navigation section?", options: ["<nav>", "<header>", "<navigate>", "<menu>"], answer: 0, category: "Web Development", difficulty: "EASY", explanation: "<nav> is the semantic container for primary navigation links." },
+      { question: "Which CSS property is used to create a flex container?", options: ["display: flex", "box-sizing: border-box", "position: relative", "float: left"], answer: 0, category: "Web Development", difficulty: "EASY", explanation: "display: flex defines a flex container for children." },
+      { question: "What is the return type of typeof NaN in JavaScript?", options: ["'number'", "'nan'", "'undefined'", "'object'"], answer: 0, category: "Computer Science", difficulty: "MEDIUM", explanation: "In JS, NaN is technically a numeric type representing Not-a-Number." },
+      { question: "Which React Hook performs side effects in function components?", options: ["useState", "useEffect", "useMemo", "useCallback"], answer: 1, category: "Computer Science", difficulty: "MEDIUM", explanation: "useEffect runs lifecycle side effects like data fetching and timers." },
+      { question: "Which OOP concept enables a class to derive features from another class?", options: ["Encapsulation", "Polymorphism", "Inheritance", "Abstraction"], answer: 2, category: "Computer Science", difficulty: "EASY", explanation: "Inheritance allows a child class to inherit fields and methods." },
+      { question: "In computing, what does CPU stand for?", options: ["Central Processing Unit", "Central Process Unit", "Computer Personal Unit", "Central Processor Unit"], answer: 0, category: "Computers", difficulty: "EASY", explanation: "CPU stands for Central Processing Unit." },
+      { question: "Which data structure operates on a Last In First Out (LIFO) basis?", options: ["Queue", "Stack", "Array", "Linked List"], answer: 1, category: "Algorithms", difficulty: "EASY", explanation: "A Stack operates on LIFO principles." },
+      { question: "What is the primary protocol used for transferring encrypted web pages?", options: ["HTTP", "HTTPS", "FTP", "SSH"], answer: 1, category: "Networks", difficulty: "EASY", explanation: "HTTPS encrypts communications over TLS/SSL." }
+    ];
+    startAssessment();
   }
 
   // 5. Start Assessment Session
@@ -156,6 +198,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (questionCounter) questionCounter.textContent = `Question ${currentIndex + 1} of ${questions.length}`;
     if (progressFill) progressFill.style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
     if (questionTitle) questionTitle.textContent = q.question;
+    if (subjectBadge) {
+      subjectBadge.textContent = q.category ? `${q.category} • ${q.difficulty}` : subject.replace('_', ' ').toUpperCase();
+    }
 
     // Render Options
     if (optionsList) {
@@ -237,12 +282,12 @@ document.addEventListener('DOMContentLoaded', () => {
       history.unshift({
         id: Date.now(),
         date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-        subject: subject.replace('_', ' ').toUpperCase(),
+        subject: `Open Trivia (${subject.replace('_', ' ').toUpperCase()})`,
         difficulty: difficulty.toUpperCase(),
         score: score,
         total: total,
         percentage: percentage,
-        user: user ? user.name : 'Guest Student'
+        user: user ? user.name : 'Student'
       });
       localStorage.setItem('quizmaster_history', JSON.stringify(history));
     } catch (e) {
@@ -257,13 +302,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (modalScore) modalScore.textContent = `${score} / ${total} (${percentage}%)`;
     if (modalBadge) modalBadge.textContent = percentage >= 80 ? '🌟' : percentage >= 50 ? '👍' : '📚';
-    if (modalTitle) modalTitle.textContent = percentage >= 80 ? 'Exemplary Score!' : percentage >= 50 ? 'Assessment Complete!' : 'Study Reinforcement Needed';
+    if (modalTitle) modalTitle.textContent = percentage >= 80 ? 'Outstanding Score!' : percentage >= 50 ? 'Assessment Complete!' : 'Knowledge Reinforcement Needed';
     if (modalFeedback) {
       modalFeedback.textContent = percentage >= 80
-        ? 'Superb performance! You are well prepared for campus technical tests.'
+        ? 'Superb performance! You mastered these questions from Open Trivia DB.'
         : percentage >= 50
-        ? 'Solid practice attempt. Review explanations below to sharpen your speed.'
-        : 'Review the study notes and retake this drill to master foundational concepts.';
+        ? 'Solid practice attempt! Review the explanations below to refine your knowledge.'
+        : 'Take some time to review the answers below and try another Open Trivia drill!';
     }
 
     // Populate Detailed Answer Review
@@ -273,18 +318,28 @@ document.addEventListener('DOMContentLoaded', () => {
       questions.forEach((q, idx) => {
         const isCorrect = userAnswers[idx] === q.answer;
         const userChoice = userAnswers[idx] !== null ? q.options[userAnswers[idx]] : 'Unanswered';
-        const correctChoice = q.options[q.answer];
+        const correctChoice = q.options[q.answer] || 'N/A';
 
         const item = document.createElement('div');
         item.className = `review-item ${isCorrect ? 'correct' : 'incorrect'}`;
-        item.innerHTML = `
-          <h4>Q${idx + 1}. ${q.question}</h4>
-          <div style="display: flex; gap: 1rem; margin: 0.3rem 0; font-size: 0.82rem;">
-            <span>Your: <strong style="color: ${isCorrect ? 'var(--success)' : 'var(--danger)'};">${userChoice}</strong></span>
-            <span>Correct: <strong style="color: var(--success);">${correctChoice}</strong></span>
-          </div>
-          <div style="font-size: 0.78rem; color: var(--text-muted);">${q.explanation}</div>
+
+        const qHeading = document.createElement('h4');
+        qHeading.textContent = `Q${idx + 1}. ${q.question}`;
+
+        const choiceRow = document.createElement('div');
+        choiceRow.style.cssText = 'display: flex; gap: 1rem; margin: 0.3rem 0; font-size: 0.82rem; flex-wrap: wrap;';
+        choiceRow.innerHTML = `
+          <span>Your Answer: <strong style="color: ${isCorrect ? 'var(--success)' : 'var(--danger)'};">${escapeHtml(userChoice)}</strong></span>
+          <span>Correct: <strong style="color: var(--success);">${escapeHtml(correctChoice)}</strong></span>
         `;
+
+        const expl = document.createElement('div');
+        expl.style.cssText = 'font-size: 0.78rem; color: var(--text-muted);';
+        expl.textContent = q.explanation;
+
+        item.appendChild(qHeading);
+        item.appendChild(choiceRow);
+        item.appendChild(expl);
         reviewList.appendChild(item);
       });
     }
@@ -319,6 +374,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Start initial API load
+  // Start Open Trivia DB API extraction
   fetchQuestions();
 });

@@ -32,8 +32,8 @@
     <!-- Loading Spinner -->
     <div class="loading-spinner" id="loadingState">
       <div class="spinner-dot"></div>
-      <h3 style="font-size: 1.25rem; margin-bottom: 0.3rem;">Fetching Live Questions via API...</h3>
-      <p style="color: var(--text-muted); font-size: 0.88rem;">Connecting to API endpoint and preparing your assessment session.</p>
+      <h3 style="font-size: 1.25rem; margin-bottom: 0.3rem;">Extracting Questions from Open Trivia DB...</h3>
+      <p style="color: var(--text-muted); font-size: 0.88rem;">Connecting to Open Trivia Database (https://opentdb.com/api.php?amount=40) and generating your assessment session.</p>
     </div>
 
     <!-- Active Assessment Container -->
@@ -43,7 +43,7 @@
         <div class="arena-header">
           <div>
             <span id="subjectBadge" style="font-size: 0.82rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">Assessment</span>
-            <div id="questionCounter" style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.2rem;">Question 1 of 10</div>
+            <div id="questionCounter" style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.2rem;">Question 1 of 40</div>
           </div>
           <div class="timer-pill" id="timerDigits">01:00</div>
         </div>

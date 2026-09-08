@@ -36,10 +36,10 @@
     <!-- Quick Presets -->
     <div class="preset-bar">
       <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Quick Presets:</span>
-      <button type="button" class="preset-btn" data-preset="rapid">⚡ 5-Min Warm-Up</button>
-      <button type="button" class="preset-btn" data-preset="mock">🎯 Standard Mock</button>
-      <button type="button" class="preset-btn" data-preset="aptitude">🧠 Aptitude Drill</button>
-      <button type="button" class="preset-btn" data-preset="react">⚛️ React Deep-Dive</button>
+      <button type="button" class="preset-btn" data-preset="trivia40">🎯 40-Q Open Trivia Live</button>
+      <button type="button" class="preset-btn" data-preset="rapid">⚡ 10-Q Warm-Up</button>
+      <button type="button" class="preset-btn" data-preset="mock">🏆 40-Q Mock Test</button>
+      <button type="button" class="preset-btn" data-preset="tech">💻 Tech &amp; CS Drill</button>
     </div>
 
     <form action="arena.html" method="GET" id="assessmentForm" class="config-grid">
@@ -49,13 +49,15 @@
         <div class="card">
           <h3>1. Select Subject Track</h3>
           <div class="choice-pills">
-            <label class="choice-pill"><input type="radio" name="subject" value="mixed" checked><span>🌐 Mixed Tech Drill</span></label>
-            <label class="choice-pill"><input type="radio" name="subject" value="html"><span>📄 HTML5 & Semantics</span></label>
-            <label class="choice-pill"><input type="radio" name="subject" value="css"><span>🎨 CSS3 & Layouts</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="mixed" checked><span>🌐 Mixed Knowledge &amp; Tech</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="html"><span>📄 HTML5 &amp; Web</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="css"><span>🎨 CSS3 &amp; Layouts</span></label>
             <label class="choice-pill"><input type="radio" name="subject" value="javascript"><span>⚡ Modern JavaScript</span></label>
-            <label class="choice-pill"><input type="radio" name="subject" value="react"><span>⚛️ React Architecture</span></label>
-            <label class="choice-pill"><input type="radio" name="subject" value="oops"><span>🧩 OOPs & Software</span></label>
-            <label class="choice-pill"><input type="radio" name="subject" value="logic_reasoning"><span>📊 Logic & Aptitude</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="react"><span>⚛️ React &amp; Components</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="oops"><span>🧩 OOPs &amp; Software</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="logic_reasoning"><span>📊 Mathematics &amp; Logic</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="gadgets"><span>📱 Modern Gadgets &amp; Tech</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="general"><span>🌍 General Knowledge</span></label>
           </div>
         </div>
 
@@ -74,10 +76,10 @@
         <div class="card">
           <h3>3. Question Volume</h3>
           <div class="choice-pills">
-            <label class="choice-pill"><input type="radio" name="question_count" value="5"><span>5 Questions</span></label>
-            <label class="choice-pill"><input type="radio" name="question_count" value="10" checked><span>10 Questions</span></label>
-            <label class="choice-pill"><input type="radio" name="question_count" value="15"><span>15 Questions</span></label>
+            <label class="choice-pill"><input type="radio" name="question_count" value="10"><span>10 Questions</span></label>
             <label class="choice-pill"><input type="radio" name="question_count" value="20"><span>20 Questions</span></label>
+            <label class="choice-pill"><input type="radio" name="question_count" value="30"><span>30 Questions</span></label>
+            <label class="choice-pill"><input type="radio" name="question_count" value="40" checked><span>40 Questions (Live API)</span></label>
           </div>
         </div>
 
@@ -99,37 +101,36 @@
             <label class="choice-pill"><input type="radio" name="per_q_time" value="0"><span>Untimed Practice</span></label>
           </div>
           <div id="totalTimeOptions" class="choice-pills" style="display: none;">
-            <label class="choice-pill"><input type="radio" name="total_test_time" value="10"><span>10 Minutes</span></label>
-            <label class="choice-pill"><input type="radio" name="total_test_time" value="15" checked><span>15 Minutes</span></label>
-            <label class="choice-pill"><input type="radio" name="total_test_time" value="20"><span>20 Minutes</span></label>
+            <label class="choice-pill"><input type="radio" name="total_test_time" value="15"><span>15 Minutes</span></label>
+            <label class="choice-pill"><input type="radio" name="total_test_time" value="25" checked><span>25 Minutes</span></label>
+            <label class="choice-pill"><input type="radio" name="total_test_time" value="40"><span>40 Minutes</span></label>
           </div>
         </div>
 
-        <!-- Step 5: QuizAPI Key (Optional) -->
-        <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <h3 style="margin-bottom: 0;">5. Live API Key (Optional)</h3>
-            <span id="apiKeyStatusBadge" style="font-size: 0.78rem; font-weight: 700; color: var(--primary);">Live API Mode</span>
+        <!-- Step 5: Live API Source -->
+        <div class="card" style="border-left: 3px solid var(--primary);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <h3 style="margin-bottom: 0; font-size: 1.05rem;">🌐 Question Engine: Open Trivia DB</h3>
+            <span style="font-size: 0.78rem; font-weight: 700; color: var(--success); background: rgba(16, 185, 129, 0.15); padding: 0.2rem 0.6rem; border-radius: 9999px;">Live API Connected</span>
           </div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">Questions are fetched live. Enter your QuizAPI key or leave empty for free public questions.</p>
-          <div style="display: flex; gap: 0.5rem;">
-            <input type="text" id="quizApiKeyInput" name="api_key" class="form-control" placeholder="Paste QuizAPI.io Key (optional)">
-            <button type="button" class="btn btn-outline btn-sm" id="saveApiKeyBtn">Save Key</button>
-          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem;">
+            Extracting 40 questions live from the public Open Trivia Database:
+            <code style="background: var(--bg); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.8rem; color: var(--primary);">https://opentdb.com/api.php?amount=40</code>
+          </p>
         </div>
       </div>
 
       <!-- Right: Live Summary Sidebar -->
       <aside class="summary-card">
         <h3 style="margin-bottom: 1rem;">📋 Assessment Summary</h3>
-        <div class="summary-item"><span>Track:</span><span id="summarySubject">Mixed Tech Drill</span></div>
+        <div class="summary-item"><span>Track:</span><span id="summarySubject">Mixed Knowledge &amp; Tech</span></div>
         <div class="summary-item"><span>Difficulty:</span><span id="summaryDifficulty">Mixed Standard</span></div>
-        <div class="summary-item"><span>Questions:</span><span id="summaryCount">10 Questions</span></div>
+        <div class="summary-item"><span>Questions:</span><span id="summaryCount">40 Questions</span></div>
         <div class="summary-item"><span>Pacing:</span><span id="summaryPacing">60s / question</span></div>
-        <div class="summary-item"><span>API Mode:</span><span id="summaryApiMode" style="color: var(--primary);">Live API (Active)</span></div>
+        <div class="summary-item"><span>API Source:</span><span id="summaryApiMode" style="color: var(--primary);">Open Trivia DB (40 Qs)</span></div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; padding: 0.8rem; font-size: 1rem;">
-          Launch Assessment →
+          Launch 40-Q Assessment →
         </button>
       </aside>
     </form>

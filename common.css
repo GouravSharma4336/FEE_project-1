@@ -1,0 +1,217 @@
+/* =========================================================
+   QuizMaster - Base & Common Stylesheet (common.css)
+   Design tokens, themes, typography, buttons, navbar, footer & toasts
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+:root {
+  /* Color Palette - Dark Mode (Default) */
+  --bg: #090d16;
+  --bg-card: rgba(19, 27, 44, 0.75);
+  --bg-hover: #1c2636;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-focus: #8b5cf6;
+  --text: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --primary: #8b5cf6;
+  --primary-hover: #7c3aed;
+  --primary-glow: rgba(139, 92, 246, 0.25);
+  --accent: #06b6d4;
+  --accent-cyan: #38bdf8;
+  --accent-green: #10b981;
+  --accent-coral: #fb7185;
+  --accent-purple: #8b5cf6;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --radius: 16px;
+  --radius-sm: 8px;
+  --radius-pill: 9999px;
+  --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="light"] {
+  /* Color Palette - Light Mode */
+  --bg: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-hover: #f1f5f9;
+  --border: #e2e8f0;
+  --border-focus: #2563eb;
+  --text: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-glow: rgba(37, 99, 235, 0.15);
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Base Reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; }
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  width: 100%;
+}
+
+/* 1. Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 2rem;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+.logo { font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; letter-spacing: -0.02em; }
+.logo span { color: var(--primary); }
+.nav-links { display: flex; list-style: none; gap: 0.4rem; }
+.nav-links a {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  transition: 0.2s ease;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text); background: var(--bg-hover); }
+.nav-actions { display: flex; align-items: center; gap: 0.6rem; }
+.theme-toggle-btn {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.2s;
+}
+.theme-toggle-btn:hover { border-color: var(--primary); background: var(--bg-hover); }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: 0.2s ease;
+  text-decoration: none;
+}
+.btn-primary { background: var(--primary); color: #fff !important; }
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 4px 14px var(--primary-glow); }
+.btn-outline { background: transparent; border-color: var(--border); color: var(--text); }
+.btn-outline:hover { background: var(--bg-hover); border-color: var(--text-muted); }
+.btn-sm { padding: 0.35rem 0.8rem; font-size: 0.82rem; }
+.btn-lg { padding: 0.8rem 1.6rem; font-size: 1rem; }
+
+/* Unified Footer */
+footer {
+  margin-top: auto;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 2rem 1.5rem;
+}
+.footer-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.brand-logo { font-size: 1.2rem; font-weight: 800; }
+.footer-brand p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
+.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+.footer-links a { font-size: 0.88rem; color: var(--text-muted); font-weight: 600; transition: 0.2s; }
+.footer-links a:hover { color: var(--primary); }
+.footer-bottom {
+  max-width: 1140px;
+  margin: 1.2rem auto 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: rgba(19, 27, 44, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 0.9rem 1.4rem;
+  color: #f1f5f9;
+  font-size: 0.92rem;
+  font-weight: 600;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+  animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: all 0.25s ease;
+}
+.toast.toast-success { border-left: 4px solid #10b981; }
+.toast.toast-warning { border-left: 4px solid #fb7185; }
+.toast.toast-info    { border-left: 4px solid #38bdf8; }
+
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes toastSlideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(40px); }
+}
+
+@media (max-width: 640px) {
+  .navbar { flex-wrap: wrap; gap: 0.75rem; padding: 0.75rem 1rem; }
+  .nav-links { order: 3; width: 100%; justify-content: center; flex-wrap: wrap; }
+  .footer-container, .footer-bottom { flex-direction: column; text-align: center; }
+}

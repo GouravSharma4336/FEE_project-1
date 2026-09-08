@@ -52,45 +52,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const sumPacing = document.getElementById('summaryPacing');
     const perQOpts = document.getElementById('perQuestionOptions');
     const totalOpts = document.getElementById('totalTimeOptions');
-    const apiKeyInput = document.getElementById('quizApiKeyInput');
-    const saveKeyBtn = document.getElementById('saveApiKeyBtn');
-    const keyBadge = document.getElementById('apiKeyStatusBadge');
 
-    // Pre-fill saved API key if available
-    const savedKey = localStorage.getItem('quizapi_key') || '';
-    if (apiKeyInput && savedKey) {
-      apiKeyInput.value = savedKey;
-      if (keyBadge) keyBadge.textContent = 'Key Saved ✓';
-    }
-
-    if (saveKeyBtn && apiKeyInput) {
-      saveKeyBtn.onclick = () => {
-        const val = apiKeyInput.value.trim();
-        if (val) {
-          localStorage.setItem('quizapi_key', val);
-          if (keyBadge) keyBadge.textContent = 'Key Saved ✓';
-          alert('QuizAPI key saved for your assessments!');
-        } else {
-          localStorage.removeItem('quizapi_key');
-          if (keyBadge) keyBadge.textContent = 'Live API Mode';
-        }
-      };
+    // Pre-select subject from URL query parameter if present (e.g. quiz.html?subject=javascript)
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const initialSubject = urlParams.get('subject');
+      if (initialSubject) {
+        const radio = form.querySelector(`input[name="subject"][value="${initialSubject}"]`);
+        if (radio) radio.checked = true;
+      }
+    } catch (e) {
+      console.warn('Could not parse URL params', e);
     }
 
     const subjectMap = {
-      mixed: 'Mixed Tech Drill',
-      html: 'HTML5 & Semantics',
-      css: 'CSS3 & Layouts',
-      javascript: 'Modern JavaScript',
-      react: 'React Architecture',
-      oops: 'OOPs & Software',
-      logic_reasoning: 'Logic & Aptitude'
+      mixed: 'Mixed Knowledge & Tech',
+      computers: 'Computer Science & IT',
+      html: 'HTML5 & Web Semantics',
+      css: 'CSS3 & Responsive Layouts',
+      javascript: 'Modern JavaScript (ES6+)',
+      react: 'React & Frontend Components',
+      oops: 'OOPs & Software Architecture',
+      logic_reasoning: 'Mathematics & Logic',
+      gadgets: 'Modern Gadgets & Tech',
+      general: 'General Knowledge'
     };
 
     function updateSummary() {
       const sub = form.querySelector('input[name="subject"]:checked')?.value || 'mixed';
       const diff = form.querySelector('input[name="difficulty"]:checked')?.value || 'mixed';
-      const count = form.querySelector('input[name="question_count"]:checked')?.value || '10';
+      const count = form.querySelector('input[name="question_count"]:checked')?.value || '40';
       const mode = form.querySelector('input[name="timer_mode"]:checked')?.value || 'per_question';
 
       if (sumSubject) sumSubject.textContent = subjectMap[sub] || sub;
@@ -105,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         if (perQOpts) perQOpts.style.display = 'none';
         if (totalOpts) totalOpts.style.display = 'flex';
-        const total = form.querySelector('input[name="total_test_time"]:checked')?.value || '15';
+        const total = form.querySelector('input[name="total_test_time"]:checked')?.value || '25';
         if (sumPacing) sumPacing.textContent = `${total} Mins total`;
       }
     }
@@ -122,17 +113,17 @@ document.addEventListener('DOMContentLoaded', () => {
           if (radio) radio.checked = true;
         };
 
-        if (preset === 'rapid') {
-          setVal('subject', 'mixed'); setVal('difficulty', 'easy'); setVal('question_count', '5');
+        if (preset === 'trivia40') {
+          setVal('subject', 'mixed'); setVal('difficulty', 'mixed'); setVal('question_count', '40');
+          setVal('timer_mode', 'per_question'); setVal('per_q_time', '60');
+        } else if (preset === 'rapid') {
+          setVal('subject', 'mixed'); setVal('difficulty', 'easy'); setVal('question_count', '10');
           setVal('timer_mode', 'per_question'); setVal('per_q_time', '30');
         } else if (preset === 'mock') {
-          setVal('subject', 'mixed'); setVal('difficulty', 'medium'); setVal('question_count', '15');
-          setVal('timer_mode', 'total_test'); setVal('total_test_time', '15');
-        } else if (preset === 'aptitude') {
-          setVal('subject', 'logic_reasoning'); setVal('difficulty', 'medium'); setVal('question_count', '10');
-          setVal('timer_mode', 'per_question'); setVal('per_q_time', '60');
-        } else if (preset === 'react') {
-          setVal('subject', 'react'); setVal('difficulty', 'mixed'); setVal('question_count', '10');
+          setVal('subject', 'mixed'); setVal('difficulty', 'medium'); setVal('question_count', '40');
+          setVal('timer_mode', 'total_test'); setVal('total_test_time', '25');
+        } else if (preset === 'tech') {
+          setVal('subject', 'computers'); setVal('difficulty', 'medium'); setVal('question_count', '40');
           setVal('timer_mode', 'per_question'); setVal('per_q_time', '60');
         }
         updateSummary();
