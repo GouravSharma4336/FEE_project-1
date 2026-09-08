@@ -14,6 +14,15 @@
 </head>
 
 <body>
+    <!-- Decorative Ambient Backdrop Shapes (Dark + Purple Visual Identity) -->
+    <div class="ambient-backdrop" aria-hidden="true">
+        <div class="ambient-shape ambient-purple-circle"></div>
+        <div class="ambient-shape ambient-cyan-circle"></div>
+        <div class="ambient-shape ambient-lavender-circle"></div>
+        <div class="ambient-glow-orb ambient-glow-1"></div>
+        <div class="ambient-glow-orb ambient-glow-2"></div>
+    </div>
+
     <!-- Top Sticky Navbar -->
     <nav class="navbar">
         <a href="index.html" class="logo">
@@ -40,6 +49,7 @@
         <!-- Hero Section with Showcase -->
         <section class="hero-wrapper">
             <div class="hero-content">
+                <div id="returningBadgeContainer"></div>
                 <div class="hero-badge">
                     <span class="badge-dot"></span> Campus Placement Practice
                 </div>
@@ -51,7 +61,7 @@
                     Practice essential technical concepts and quantitative reasoning for campus placements and software engineering tests with timed practice drills.
                 </p>
                 <div class="hero-actions">
-                    <a href="quiz.html" class="btn btn-primary btn-lg">Start Quiz Now →</a>
+                    <a href="quiz.html" class="btn btn-primary btn-lg" id="heroStartBtn">Start Quiz Now →</a>
                     <a href="prepare.html" class="btn btn-outline btn-lg">📚 Study Notes</a>
                 </div>
             </div>
@@ -239,6 +249,9 @@
             <p>Semantic HTML5 &amp; Vanilla CSS.</p>
         </div>
     </footer>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
     <!-- Shared Script for Themes & Auth -->
     <script src="script.js"></script>

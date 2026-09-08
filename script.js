@@ -175,4 +175,122 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
+
+  // 5. Modern Toast Notification System
+  function showToast(message, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    let icon = 'ℹ️';
+    if (type === 'success') icon = '🟢';
+    if (type === 'warning') icon = '⚠️';
+    toast.innerHTML = `<span style="font-size: 1.1rem;">${icon}</span> <span>${message}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'toastSlideOut 0.3s forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3500);
+  }
+
+  // 6. BOM & DOM Feature Layer (Homepage Interactive Architecture)
+  // Feature A: Local Storage Returning Visitor (BOM)
+  const heroStartBtn = document.getElementById('heroStartBtn');
+  const returningBadgeContainer = document.getElementById('returningBadgeContainer');
+  const hasVisited = localStorage.getItem('quizmaster_visited');
+  const history = JSON.parse(localStorage.getItem('quizmaster_history') || '[]');
+  const savedUser = JSON.parse(localStorage.getItem('quizmaster_user') || 'null');
+
+  if (hasVisited || history.length > 0 || (savedUser && savedUser.name)) {
+    if (heroStartBtn) {
+      heroStartBtn.textContent = 'Continue Quiz →';
+    }
+    if (returningBadgeContainer && !returningBadgeContainer.hasChildNodes()) {
+      const name = savedUser && savedUser.name ? savedUser.name : 'Learner';
+      returningBadgeContainer.innerHTML = `
+        <div class="returning-visitor-badge">
+          <span>✨</span> Welcome back, ${name}! Progress remembered.
+        </div>
+      `;
+    }
+  }
+  // Record visit
+  localStorage.setItem('quizmaster_visited', 'true');
+
+  const cardLocalStorage = document.getElementById('cardLocalStorage');
+  if (cardLocalStorage) {
+    cardLocalStorage.addEventListener('click', () => {
+      const attempts = history.length;
+      showToast(`💾 LocalStorage: Active. ${attempts} previous quiz attempt(s) recorded.`, 'success');
+    });
+  }
+
+  // Feature B: Network Status (BOM)
+  window.addEventListener('online', () => {
+    showToast('🟢 Connection restored! Live question APIs active.', 'success');
+  });
+  window.addEventListener('offline', () => {
+    showToast('⚠️ You are currently offline. Offline practice drills ready.', 'warning');
+  });
+
+  const cardNetworkStatus = document.getElementById('cardNetworkStatus');
+  if (cardNetworkStatus) {
+    cardNetworkStatus.addEventListener('click', () => {
+      const status = navigator.onLine ? 'Online 🟢' : 'Offline ⚠️';
+      showToast(`🌐 Browser Network Status: ${status} (BOM API)`, navigator.onLine ? 'success' : 'warning');
+    });
+  }
+
+  // Feature C: Native Share (BOM)
+  const cardNativeShare = document.getElementById('cardNativeShare');
+  if (cardNativeShare) {
+    cardNativeShare.addEventListener('click', async () => {
+      const shareData = {
+        title: 'QuizMaster - Technical & Aptitude Practice',
+        text: 'Master technical skills and placement aptitude with timed practice drills!',
+        url: window.location.href
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          showToast('🚀 QuizMaster shared successfully!', 'success');
+        } catch (err) {
+          if (err.name !== 'AbortError') {
+            fallbackCopyLink();
+          }
+        }
+      } else {
+        fallbackCopyLink();
+      }
+    });
+
+    function fallbackCopyLink() {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          showToast('📋 Quiz link copied to clipboard!', 'info');
+        }).catch(() => {
+          showToast('🔗 Quiz link: ' + window.location.href, 'info');
+        });
+      } else {
+        showToast('🔗 Quiz link: ' + window.location.href, 'info');
+      }
+    }
+  }
+
+  // Feature D: DOM Updates (DOM)
+  const cardDomUpdates = document.getElementById('cardDomUpdates');
+  const domUpdateText = document.getElementById('domUpdateText');
+  let domClickCount = 0;
+  if (cardDomUpdates && domUpdateText) {
+    cardDomUpdates.addEventListener('click', () => {
+      domClickCount++;
+      const badges = ['⚡ Realtime Rendering', '🎯 Live Question Generator', '⏱️ Dynamic Timers', '📊 Instant Score Calculation'];
+      const chosenBadge = badges[domClickCount % badges.length];
+      domUpdateText.innerHTML = `<strong>Active DOM Update #${domClickCount}:</strong> ${chosenBadge} injected smoothly!`;
+      cardDomUpdates.style.transform = 'scale(0.98)';
+      setTimeout(() => { cardDomUpdates.style.transform = ''; }, 150);
+      showToast(`✨ DOM Node updated dynamically (${chosenBadge})`, 'success');
+    });
+  }
 });
