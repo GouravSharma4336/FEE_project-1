@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizMaster - Assessment Arena</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .progress-bar { height: 4px; background: var(--bg-hover); width: 100%; position: sticky; top: 0; z-index: 10; }
+    .progress-fill { height: 100%; width: 0%; background: var(--primary); transition: width 0.3s ease; }
+    .loading-spinner { text-align: center; padding: 4rem 1rem; }
+    .spinner-dot { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <!-- Arena Top Bar -->
+  <nav class="navbar">
+    <a href="index.html" class="logo"><span>🎯</span> QuizMaster <span>Arena</span></a>
+    <div class="nav-actions">
+      <a href="quiz.html" class="btn btn-outline btn-sm" onclick="return confirm('Exit test? Progress will not be saved.');">✕ Exit Test</a>
+    </div>
+  </nav>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <!-- Main Arena Layout -->
+  <main class="container">
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingState">
+      <div class="spinner-dot"></div>
+      <h3 style="font-size: 1.25rem; margin-bottom: 0.3rem;">Fetching Live Questions via API...</h3>
+      <p style="color: var(--text-muted); font-size: 0.88rem;">Connecting to API endpoint and preparing your assessment session.</p>
+    </div>
+
+    <!-- Active Assessment Container -->
+    <div class="arena-layout" id="quizLayout" style="display: none;">
+      <!-- Left: Question Card -->
+      <article class="card" style="padding: 2rem;">
+        <div class="arena-header">
+          <div>
+            <span id="subjectBadge" style="font-size: 0.82rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">Assessment</span>
+            <div id="questionCounter" style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.2rem;">Question 1 of 10</div>
+          </div>
+          <div class="timer-pill" id="timerDigits">01:00</div>
+        </div>
+
+        <h2 class="question-title" id="questionTitle">Loading question prompt...</h2>
+
+        <div class="options-list" id="optionsList" role="radiogroup">
+          <!-- Injected dynamically by arena.js -->
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-outline" id="prevBtn" disabled>← Previous</button>
+          <button type="button" class="btn btn-primary" id="nextBtn">Next Question →</button>
+        </div>
+      </article>
+
+      <!-- Right: Question Palette -->
+      <aside class="palette-card">
+        <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Question Palette</h4>
+        <div class="palette-grid" id="paletteGrid">
+          <!-- Injected dynamically by arena.js -->
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Result Modal with Answer Review -->
+  <div class="modal-overlay" id="resultModal" role="dialog" aria-modal="true">
+    <div class="modal-content" style="max-width: 520px;">
+      <div id="modalBadge" style="font-size: 3rem; margin-bottom: 0.5rem;">🏆</div>
+      <h2 id="modalTitle" style="font-size: 1.6rem; margin-bottom: 0.4rem;">Assessment Completed!</h2>
+      <div id="modalScore" style="font-size: 2.4rem; font-weight: 800; color: var(--primary); margin: 0.5rem 0;">0 / 0</div>
+      <p id="modalFeedback" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">Great effort on this practice drill!</p>
+
+      <!-- Detailed Review List -->
+      <div class="review-list" id="reviewList">
+        <!-- Review items injected by arena.js -->
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1rem;">
+        <a href="quiz.html" class="btn btn-primary">Take Another Quiz</a>
+        <div style="display: flex; gap: 0.5rem;">
+          <a href="history.html" class="btn btn-outline" style="flex: 1;">📜 View History</a>
+          <a href="leaderboard.html" class="btn btn-outline" style="flex: 1;">🏆 Leaderboard</a>
+        </div>
+        <a href="index.html" class="btn btn-outline">Return Home</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="arena.js"></script>
+</body>
+</html>

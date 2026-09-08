@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster - Campus Leaderboard</title>
+    <meta name="description" content="Check top student rankings, test accuracy percentages, and competitive scores for placement preparation.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .leaderboard-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.75rem;
+            justify-content: center;
+        }
+        .leader-filter-btn {
+            padding: 0.45rem 1rem;
+            border-radius: var(--radius-full);
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        .leader-filter-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--primary);
+        }
+        .leader-filter-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 2px 10px var(--primary-glow);
+        }
+        .player-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .player-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Sticky Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">🎯</span> Quiz<span>Master</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="prepare.html">Study Notes</a></li>
+            <li><a href="quiz.html">Start Quiz</a></li>
+            <li><a href="leaderboard.html" class="active">Leaderboard</a></li>
+            <li><a href="history.html">History</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">☀️</button>
+            <div id="authNavContainer">
+                <a href="login.html" class="btn btn-outline">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container" style="max-width: 1040px; margin: 2.5rem auto 5rem; padding: 0 1.5rem;">
+        
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <div class="badge badge-primary" style="margin-bottom: 0.75rem;">
+                <span>🏆</span> Campus Ranking
+            </div>
+            <h1 style="font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: 0.5rem;">
+                Placement Drill Leaderboard
+            </h1>
+            <p style="color: var(--text-secondary); font-size: 1.05rem; max-width: 600px; margin: 0 auto;">
+                Top student performers ranked by overall accuracy and speed across technical and quantitative reasoning assessments.
+            </p>
+        </div>
+
+        <!-- Top 3 Podium -->
+        <div class="podium-wrap">
+            <!-- 2nd Place -->
+            <div class="podium-card podium-2">
+                <div class="podium-crown">🥈</div>
+                <div class="rank-badge rank-2">2</div>
+                <div class="podium-name">Diya Sengupta</div>
+                <div class="podium-score">95%</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">19 Drills Completed</div>
+            </div>
+
+            <!-- 1st Place -->
+            <div class="podium-card podium-1">
+                <div class="podium-crown">👑</div>
+                <div class="rank-badge rank-1">1</div>
+                <div class="podium-name">Aarav Patel</div>
+                <div class="podium-score">98%</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">24 Drills Completed</div>
+            </div>
+
+            <!-- 3rd Place -->
+            <div class="podium-card podium-3">
+                <div class="podium-crown">🥉</div>
+                <div class="rank-badge rank-3">3</div>
+                <div class="podium-name">Rohan Verma</div>
+                <div class="podium-score">92%</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">16 Drills Completed</div>
+            </div>
+        </div>
+
+        <!-- Filter Pills -->
+        <div class="leaderboard-filters">
+            <button type="button" class="leader-filter-btn active" data-track="all">All Tracks</button>
+            <button type="button" class="leader-filter-btn" data-track="Web &amp; HTML">HTML &amp; CSS</button>
+            <button type="button" class="leader-filter-btn" data-track="JavaScript">JavaScript</button>
+            <button type="button" class="leader-filter-btn" data-track="React">React</button>
+            <button type="button" class="leader-filter-btn" data-track="OOPs">OOPs</button>
+            <button type="button" class="leader-filter-btn" data-track="Aptitude">Aptitude</button>
+        </div>
+
+        <!-- Leaderboard Table -->
+        <div class="table-container">
+            <table class="data-table" id="leaderboardTable">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Rank</th>
+                        <th>Student Candidate</th>
+                        <th>Primary Track</th>
+                        <th>Drills</th>
+                        <th>Accuracy</th>
+                        <th>Rating</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                    <!-- Dynamic rows injected via script -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Call to Action -->
+        <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);">
+            <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--text-primary);">Want to climb the ranks?</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">Complete timed assessments to record your accuracy and challenge campus peers.</p>
+            <a href="quiz.html" class="btn btn-primary">Take an Assessment Now →</a>
+        </div>
+
+    </div>
+
+    <!-- Unified Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="brand-logo">
+                    <span class="logo-icon">🎯</span> QuizMaster
+                </div>
+                <p>Campus placement and technical assessment practice platform.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="prepare.html">Study Notes</a>
+                <a href="quiz.html">Start Quiz</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="history.html">History</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 QuizMaster. Frontend Engineering (FEE) Project 2.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const leaderboardBody = document.getElementById('leaderboardBody');
+            const filterBtns = document.querySelectorAll('.leader-filter-btn');
+
+            // Static campus leaderboard baseline
+            const baseLeaderboard = [
+                { rank: 1, name: 'Aarav Patel', track: 'JavaScript', drills: 24, accuracy: 98, rating: 'Grandmaster' },
+                { rank: 2, name: 'Diya Sengupta', track: 'React', drills: 19, accuracy: 95, rating: 'Master' },
+                { rank: 3, name: 'Rohan Verma', track: 'Aptitude', drills: 16, accuracy: 92, rating: 'Expert' },
+                { rank: 4, name: 'Ananya Iyer', track: 'Web & HTML', drills: 15, accuracy: 90, rating: 'Expert' },
+                { rank: 5, name: 'Vikram Malhotra', track: 'OOPs', drills: 14, accuracy: 88, rating: 'Pro' },
+                { rank: 6, name: 'Neha Joshi', track: 'JavaScript', drills: 12, accuracy: 85, rating: 'Pro' },
+                { rank: 7, name: 'Karan Mehra', track: 'Aptitude', drills: 10, accuracy: 82, rating: 'Competitor' },
+                { rank: 8, name: 'Sneha Roy', track: 'React', drills: 9, accuracy: 80, rating: 'Competitor' }
+            ];
+
+            let activeFilter = 'all';
+
+            function renderLeaderboard() {
+                leaderboardBody.innerHTML = '';
+
+                // Check logged in user and recent test attempts
+                const user = JSON.parse(localStorage.getItem('quizmaster_user') || 'null');
+                const history = JSON.parse(localStorage.getItem('quizmaster_history') || '[]');
+
+                let list = [...baseLeaderboard];
+
+                // If user took tests, calculate their entry
+                if (history && history.length > 0) {
+                    let userTotalPct = 0;
+                    history.forEach(h => userTotalPct += (h.percentage || 0));
+                    const userAvg = Math.round(userTotalPct / history.length);
+                    const userName = user ? user.name : 'You (Current Student)';
+
+                    // Add user entry
+                    list.push({
+                        rank: 0, // dynamically sorted
+                        name: userName,
+                        track: history[0].subject || 'Mixed Drill',
+                        drills: history.length,
+                        accuracy: userAvg,
+                        rating: userAvg >= 90 ? 'Master' : (userAvg >= 75 ? 'Expert' : 'Competitor'),
+                        isCurrentUser: true
+                    });
+
+                    // Sort by accuracy descending
+                    list.sort((a, b) => b.accuracy - a.accuracy);
+                    list.forEach((item, idx) => item.rank = idx + 1);
+                }
+
+                const filtered = list.filter(item => {
+                    if (activeFilter === 'all') return true;
+                    return item.track.toLowerCase().includes(activeFilter.toLowerCase());
+                });
+
+                filtered.forEach(item => {
+                    const tr = document.createElement('tr');
+                    if (item.isCurrentUser) tr.className = 'highlight-user';
+
+                    let rankContent = `#${item.rank}`;
+                    let rankBadgeClass = 'rank-other';
+                    if (item.rank === 1) { rankContent = '🥇'; rankBadgeClass = 'rank-1'; }
+                    else if (item.rank === 2) { rankContent = '🥈'; rankBadgeClass = 'rank-2'; }
+                    else if (item.rank === 3) { rankContent = '🥉'; rankBadgeClass = 'rank-3'; }
+
+                    const pctClass = item.accuracy >= 85 ? 'pct-high' : (item.accuracy >= 70 ? 'pct-mid' : 'pct-low');
+
+                    tr.innerHTML = `
+                        <td><span class="rank-badge ${rankBadgeClass}">${rankContent}</span></td>
+                        <td>
+                            <div class="player-cell">
+                                <div class="player-avatar">${item.name.charAt(0)}</div>
+                                <div>
+                                    <strong style="color: var(--text-primary);">${item.name}</strong>
+                                    ${item.isCurrentUser ? '<span style="font-size: 0.72rem; padding: 0.15rem 0.4rem; background: var(--primary); color: #fff; border-radius: var(--radius-sm); margin-left: 0.4rem;">YOU</span>' : ''}
+                                </div>
+                            </div>
+                        </td>
+                        <td style="font-weight: 600;">${item.track}</td>
+                        <td style="font-family: var(--font-mono);">${item.drills}</td>
+                        <td><span class="pct-pill ${pctClass}">${item.accuracy}%</span></td>
+                        <td><span style="font-size: 0.85rem; font-weight: 700; color: var(--primary);">${item.rating}</span></td>
+                    `;
+                    leaderboardBody.appendChild(tr);
+                });
+            }
+
+            renderLeaderboard();
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeFilter = btn.getAttribute('data-track') || 'all';
+                    renderLeaderboard();
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

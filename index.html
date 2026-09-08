@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster - Technical &amp; Aptitude Practice</title>
+    <meta name="description" content="Prepare for campus placements and technical tests with timed practice drills in Web, JS, React, OOPs, and Quantitative Aptitude.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Top Sticky Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">🎯</span> Quiz<span>Master</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="prepare.html">Study Notes</a></li>
+            <li><a href="quiz.html">Start Quiz</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="history.html">History</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">☀️</button>
+            <div id="authNavContainer">
+                <a href="login.html" class="btn btn-outline">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="container">
+        
+        <!-- Hero Section with Showcase -->
+        <section class="hero-wrapper">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span> Campus Placement Practice
+                </div>
+                <h1>
+                    Master Tech Skills &amp; <br>
+                    <span class="gradient-text">Aptitude Tests</span>
+                </h1>
+                <p class="hero-desc">
+                    Practice essential technical concepts and quantitative reasoning for campus placements and software engineering tests with timed practice drills.
+                </p>
+                <div class="hero-actions">
+                    <a href="quiz.html" class="btn btn-primary btn-lg">Start Quiz Now →</a>
+                    <a href="prepare.html" class="btn btn-outline btn-lg">📚 Study Notes</a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="showcase-card">
+                    <div class="showcase-window-header">
+                        <span class="window-dot dot-red"></span>
+                        <span class="window-dot dot-yellow"></span>
+                        <span class="window-dot dot-green"></span>
+                        <span class="window-title">online-assessment.jpg</span>
+                    </div>
+                    <div class="showcase-img-wrap">
+                        <img src="online_self_assessment.jpg" alt="QuizMaster Online Assessment">
+                    </div>
+                    <div class="floating-stat-pill">
+                        <span class="live-indicator"></span>
+                        <span>⚡ Timed Assessment Arena</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Bar -->
+        <section class="stats-strip">
+            <div class="stat-item">
+                <span class="stat-num">60+</span>
+                <span class="stat-label">Practice Questions</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">06</span>
+                <span class="stat-label">Subject Tracks</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">Live</span>
+                <span class="stat-label">Countdown Timers</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">🏆</span>
+                <span class="stat-label">Campus Leaderboard</span>
+            </div>
+        </section>
+
+        <!-- Section: Available Practice Tracks -->
+        <section style="margin-bottom: 2rem;">
+            <div class="section-header">
+                <span class="sub-badge">Practice Subjects</span>
+                <h2>Available Practice Tracks</h2>
+                <p>Select any subject below to configure your practice drill, or choose mixed mode to test all topics.</p>
+            </div>
+
+            <div class="grid">
+                <!-- Track 1: HTML5 -->
+                <div class="card">
+                    <div>
+                        <div class="card-top">
+                            <div class="card-icon-pill">🌐</div>
+                            <span class="track-badge">Web Basics</span>
+                        </div>
+                        <h3>HTML5 &amp; Semantic Web</h3>
+                        <p>Semantic structuring, form validation, accessible ARIA tags, and web standards.</p>
+                        <div class="card-tags">
+                            <span>Semantics</span>
+                            <span>Forms</span>
+                            <span>ARIA</span>
+                        </div>
+                    </div>
+                    <a href="quiz.html?subject=html" class="btn btn-outline">Practice HTML →</a>
+                </div>
+
+                <!-- Track 2: CSS3 -->
+                <div class="card">
+                    <div>
+                        <div class="card-top">
+                            <div class="card-icon-pill">🎨</div>
+                            <span class="track-badge">Layouts</span>
+                        </div>
+                        <h3>CSS3 &amp; Responsive Layouts</h3>
+                        <p>Flexbox, CSS Grid layouts, box model, media queries, and styling cascade.</p>
+                        <div class="card-tags">
+                            <span>Flexbox</span>
+                            <span>Grid</span>
+                            <span>Responsive</span>
+                        </div>
+                    </div>
+                    <a href="quiz.html?subject=css" class="btn btn-outline">Practice CSS →</a>
+                </div>
+
+                <!-- Track 3: JavaScript -->
+                <div class="card">
+                    <div>
+                        <div class="card-top">
+                            <div class="card-icon-pill">⚡</div>
+                            <span class="track-badge">Core JS</span>
+                        </div>
+                        <h3>Modern JavaScript (ES6+)</h3>
+                        <p>Closures, Event Loop, Promises, async/await, scope chains, and arrays.</p>
+                        <div class="card-tags">
+                            <span>Closures</span>
+                            <span>Event Loop</span>
+                            <span>Promises</span>
+                        </div>
+                    </div>
+                    <a href="quiz.html?subject=javascript" class="btn btn-outline">Practice JS →</a>
+                </div>
+
+                <!-- Track 4: React -->
+                <div class="card">
+                    <div>
+                        <div class="card-top">
+                            <div class="card-icon-pill">⚛️</div>
+                            <span class="track-badge">Frontend</span>
+                        </div>
+                        <h3>React &amp; Components</h3>
+                        <p>Component lifecycle, modern hooks (useState, useEffect), and virtual DOM diffing.</p>
+                        <div class="card-tags">
+                            <span>Hooks</span>
+                            <span>Virtual DOM</span>
+                            <span>State</span>
+                        </div>
+                    </div>
+                    <a href="quiz.html?subject=react" class="btn btn-outline">Practice React →</a>
+                </div>
+
+                <!-- Track 5: OOPs -->
+                <div class="card">
+                    <div>
+                        <div class="card-top">
+                            <div class="card-icon-pill">🧱</div>
+                            <span class="track-badge">Software Design</span>
+                        </div>
+                        <h3>Object-Oriented Programming</h3>
+                        <p>The 4 pillars of OOP, encapsulation, inheritance, polymorphism, and SOLID principles.</p>
+                        <div class="card-tags">
+                            <span>Encapsulation</span>
+                            <span>Polymorphism</span>
+                            <span>SOLID</span>
+                        </div>
+                    </div>
+                    <a href="quiz.html?subject=oops" class="btn btn-outline">Practice OOPs →</a>
+                </div>
+
+                <!-- Track 6: Aptitude -->
+                <div class="card">
+                    <div>
+                        <div class="card-top">
+                            <div class="card-icon-pill">🧮</div>
+                            <span class="track-badge">Quantitative</span>
+                        </div>
+                        <h3>Quantitative Aptitude &amp; Reasoning</h3>
+                        <p>Speed-distance-time, profit &amp; loss, percentages, ratios, and logical problem solving.</p>
+                        <div class="card-tags">
+                            <span>Speed &amp; Time</span>
+                            <span>Percentages</span>
+                            <span>Logic</span>
+                        </div>
+                    </div>
+                    <a href="quiz.html?subject=logic_reasoning" class="btn btn-outline">Practice Aptitude →</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Unified Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="brand-logo">
+                    <span class="logo-icon">🎯</span> QuizMaster
+                </div>
+                <p>Campus placement and technical assessment practice platform.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="prepare.html">Study Notes</a>
+                <a href="quiz.html">Start Quiz</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="history.html">History</a>
+                <a href="login.html">Login</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 QuizMaster. Frontend Engineering (FEE) Project 2.</p>
+            <p>Semantic HTML5 &amp; Vanilla CSS.</p>
+        </div>
+    </footer>
+
+    <!-- Shared Script for Themes & Auth -->
+    <script src="script.js"></script>
+</body>
+
+</html>

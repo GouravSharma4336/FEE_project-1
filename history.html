@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster - Assessment History</title>
+    <meta name="description" content="View your past test scores, track accuracy percentages, and monitor your placement preparation progress.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .history-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 1.4rem;
+            text-align: center;
+        }
+        .stat-card .num {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+        .stat-card .desc {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+        .history-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Sticky Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">🎯</span> Quiz<span>Master</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="prepare.html">Study Notes</a></li>
+            <li><a href="quiz.html">Start Quiz</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="history.html" class="active">History</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">☀️</button>
+            <div id="authNavContainer">
+                <a href="login.html" class="btn btn-outline">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container" style="max-width: 1100px; margin: 2.5rem auto 5rem; padding: 0 1.5rem;">
+        
+        <!-- Header -->
+        <div style="margin-bottom: 2.5rem;">
+            <div class="badge badge-primary" style="margin-bottom: 0.75rem;">
+                <span>📜</span> My Performance Logs
+            </div>
+            <h1 style="font-size: 2.3rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: 0.5rem;">
+                Assessment History &amp; Analytics
+            </h1>
+            <p style="color: var(--text-secondary); font-size: 1.05rem;">
+                Review your recent test sessions, accuracy scores, and performance history saved in your local browser session.
+            </p>
+        </div>
+
+        <!-- Summary Stats Strip -->
+        <div class="history-stats" id="historyStatsBar" style="display: none;">
+            <div class="stat-card">
+                <div class="num" id="totalAttemptsNum">0</div>
+                <div class="desc">Tests Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="avgAccuracyNum">0%</div>
+                <div class="desc">Average Accuracy</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="bestScoreNum">0 / 0</div>
+                <div class="desc">Best Score</div>
+            </div>
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="history-controls" id="historyControls" style="display: none;">
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-secondary);" id="historyCountLabel">
+                Showing 0 past test sessions:
+            </div>
+            <div style="display: flex; gap: 0.75rem;">
+                <button type="button" class="btn btn-secondary" id="clearHistoryBtn" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+                    🗑️ Clear History
+                </button>
+                <a href="quiz.html" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+                    + Start New Assessment
+                </a>
+            </div>
+        </div>
+
+        <!-- History Data Table -->
+        <div class="table-container" id="historyTableWrap" style="display: none;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date &amp; Time</th>
+                        <th>Subject Track</th>
+                        <th>Difficulty</th>
+                        <th>Score</th>
+                        <th>Accuracy</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                    <!-- Dynamic rows injected via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">📝</div>
+            <div class="empty-title">No assessment attempts recorded yet!</div>
+            <p class="empty-desc">
+                Once you launch and complete an assessment in the arena, your scores, accuracy percentages, and question breakdowns will appear here automatically.
+            </p>
+            <a href="quiz.html" class="btn btn-primary" style="margin-top: 0.5rem;">Take Your First Quiz Now →</a>
+        </div>
+
+    </div>
+
+    <!-- Unified Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="brand-logo">
+                    <span class="logo-icon">🎯</span> QuizMaster
+                </div>
+                <p>Campus placement and technical assessment practice platform.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="prepare.html">Study Notes</a>
+                <a href="quiz.html">Start Quiz</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="history.html">History</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 QuizMaster. Frontend Engineering (FEE) Project 2.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const historyStatsBar = document.getElementById('historyStatsBar');
+            const historyControls = document.getElementById('historyControls');
+            const historyTableWrap = document.getElementById('historyTableWrap');
+            const historyTableBody = document.getElementById('historyTableBody');
+            const emptyState = document.getElementById('emptyState');
+            const totalAttemptsNum = document.getElementById('totalAttemptsNum');
+            const avgAccuracyNum = document.getElementById('avgAccuracyNum');
+            const bestScoreNum = document.getElementById('bestScoreNum');
+            const historyCountLabel = document.getElementById('historyCountLabel');
+            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+            function renderHistory() {
+                const history = JSON.parse(localStorage.getItem('quizmaster_history') || '[]');
+
+                if (!history || history.length === 0) {
+                    emptyState.style.display = 'flex';
+                    historyStatsBar.style.display = 'none';
+                    historyControls.style.display = 'none';
+                    historyTableWrap.style.display = 'none';
+                    return;
+                }
+
+                emptyState.style.display = 'none';
+                historyStatsBar.style.display = 'grid';
+                historyControls.style.display = 'flex';
+                historyTableWrap.style.display = 'block';
+
+                totalAttemptsNum.textContent = history.length;
+                historyCountLabel.textContent = `Showing ${history.length} past test session${history.length > 1 ? 's' : ''}:`;
+
+                let totalPct = 0;
+                let maxPct = 0;
+                let bestScoreStr = '0 / 0';
+
+                historyTableBody.innerHTML = '';
+
+                history.forEach((item, idx) => {
+                    totalPct += (item.percentage || 0);
+                    if ((item.percentage || 0) >= maxPct) {
+                        maxPct = item.percentage || 0;
+                        bestScoreStr = `${item.score} / ${item.total}`;
+                    }
+
+                    const tr = document.createElement('tr');
+                    
+                    const pctClass = item.percentage >= 75 ? 'pct-high' : (item.percentage >= 50 ? 'pct-mid' : 'pct-low');
+                    const statusBadge = item.percentage >= 75 ? '🌟 Exemplary' : (item.percentage >= 50 ? '👍 Good' : '📚 Practice');
+
+                    tr.innerHTML = `
+                        <td style="font-family: var(--font-mono); font-weight: 700;">#${idx + 1}</td>
+                        <td>${item.date || 'Recent'}</td>
+                        <td style="font-weight: 700; color: var(--text-primary);">${item.subject || 'Mixed Drill'}</td>
+                        <td style="text-transform: capitalize;">${item.difficulty || 'Mixed'}</td>
+                        <td class="score-badge">${item.score} / ${item.total}</td>
+                        <td><span class="pct-pill ${pctClass}">${item.percentage}%</span></td>
+                        <td><span style="font-size: 0.85rem; font-weight: 600;">${statusBadge}</span></td>
+                        <td>
+                            <a href="quiz.html" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                                Retake ↺
+                            </a>
+                        </td>
+                    `;
+                    historyTableBody.appendChild(tr);
+                });
+
+                avgAccuracyNum.textContent = `${Math.round(totalPct / history.length)}%`;
+                bestScoreNum.textContent = bestScoreStr;
+            }
+
+            renderHistory();
+
+            if (clearHistoryBtn) {
+                clearHistoryBtn.addEventListener('click', () => {
+                    if (confirm('Are you sure you want to clear all past test attempt logs?')) {
+                        localStorage.removeItem('quizmaster_history');
+                        renderHistory();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

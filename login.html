@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster - Login &amp; Sign Up</title>
+    <meta name="description" content="Sign in or create a student account to track your quiz history, test scores, and leaderboard rankings.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Top Sticky Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">🎯</span> Quiz<span>Master</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="prepare.html">Study Notes</a></li>
+            <li><a href="quiz.html">Start Quiz</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="history.html">History</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">☀️</button>
+            <div id="authNavContainer">
+                <a href="login.html" class="btn btn-outline active">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Auth Section -->
+    <main class="auth-wrapper">
+        <div class="auth-card" id="authBox">
+            
+            <!-- When already logged in -->
+            <div id="loggedInState" style="display: none; text-align: center;">
+                <div class="user-avatar-badge" id="loggedAvatar" style="width: 54px; height: 54px; font-size: 1.4rem; margin: 0 auto 1rem;">U</div>
+                <h2 id="loggedName" style="margin-bottom: 0.5rem;">Welcome back!</h2>
+                <p id="loggedEmail" style="color: var(--text-muted); margin-bottom: 1.5rem;">user@example.com</p>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="quiz.html" class="btn btn-primary">Start a New Quiz →</a>
+                    <a href="history.html" class="btn btn-outline">View My Quiz History</a>
+                    <button type="button" class="btn btn-secondary" id="logoutActionBtn">Log Out</button>
+                </div>
+            </div>
+
+            <!-- Login / Signup Form -->
+            <div id="authForms">
+                <div class="auth-header">
+                    <h2>Welcome to QuizMaster</h2>
+                    <p>Track your assessment scores, progress, and rankings</p>
+                </div>
+
+                <div class="auth-tabs" role="tablist">
+                    <button type="button" class="auth-tab active" id="tabLogin" role="tab">Sign In</button>
+                    <button type="button" class="auth-tab" id="tabSignup" role="tab">Create Account</button>
+                </div>
+
+                <!-- Alert Message -->
+                <div id="authAlert" style="display: none; padding: 0.75rem; border-radius: var(--radius-md); margin-bottom: 1.25rem; font-size: 0.88rem; font-weight: 600; text-align: center;"></div>
+
+                <!-- Sign In Form -->
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address or Username</label>
+                        <input type="text" id="loginEmail" class="form-control" placeholder="e.g. rahul@college.edu" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password" required autocomplete="current-password">
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; font-size: 0.84rem; color: var(--text-secondary);">
+                        <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                            <input type="checkbox" id="rememberMe" checked> Remember me
+                        </label>
+                        <a href="#" onclick="alert('Demo prototype: enter any email and password to log in.'); return false;" style="color: var(--primary);">Forgot?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary auth-btn">Sign In to Dashboard →</button>
+                </form>
+
+                <!-- Sign Up Form -->
+                <form id="signupForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" class="form-control" placeholder="e.g. Priya Sharma" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">College / Personal Email</label>
+                        <input type="email" id="signupEmail" class="form-control" placeholder="e.g. priya@college.edu" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Create Password</label>
+                        <input type="password" id="signupPassword" class="form-control" placeholder="Min. 6 characters" required autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary auth-btn">Create Free Account →</button>
+                </form>
+
+                <div class="auth-footer">
+                    <span id="footerToggleText">Don't have an account?</span> 
+                    <a href="#" id="footerToggleLink">Sign up now</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Unified Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="brand-logo">
+                    <span class="logo-icon">🎯</span> QuizMaster
+                </div>
+                <p>Campus placement and technical assessment practice platform.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="prepare.html">Study Notes</a>
+                <a href="quiz.html">Start Quiz</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="history.html">History</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 QuizMaster. Frontend Engineering (FEE) Project 2.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabLogin = document.getElementById('tabLogin');
+            const tabSignup = document.getElementById('tabSignup');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const footerToggleLink = document.getElementById('footerToggleLink');
+            const footerToggleText = document.getElementById('footerToggleText');
+            const authAlert = document.getElementById('authAlert');
+
+            const loggedInState = document.getElementById('loggedInState');
+            const authForms = document.getElementById('authForms');
+            const loggedName = document.getElementById('loggedName');
+            const loggedEmail = document.getElementById('loggedEmail');
+            const loggedAvatar = document.getElementById('loggedAvatar');
+            const logoutActionBtn = document.getElementById('logoutActionBtn');
+
+            // Check if user is logged in
+            function checkAuthState() {
+                const user = JSON.parse(localStorage.getItem('quizmaster_user') || 'null');
+                if (user && user.name) {
+                    authForms.style.display = 'none';
+                    loggedInState.style.display = 'block';
+                    loggedName.textContent = `Welcome, ${user.name}!`;
+                    loggedEmail.textContent = user.email || 'Student Account';
+                    loggedAvatar.textContent = user.name.charAt(0).toUpperCase();
+                } else {
+                    authForms.style.display = 'block';
+                    loggedInState.style.display = 'none';
+                }
+            }
+
+            checkAuthState();
+
+            if (logoutActionBtn) {
+                logoutActionBtn.addEventListener('click', () => {
+                    localStorage.removeItem('quizmaster_user');
+                    window.location.reload();
+                });
+            }
+
+            function showLogin() {
+                tabLogin.classList.add('active');
+                tabSignup.classList.remove('active');
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                footerToggleText.textContent = "Don't have an account?";
+                footerToggleLink.textContent = "Sign up now";
+                authAlert.style.display = 'none';
+            }
+
+            function showSignup() {
+                tabSignup.classList.add('active');
+                tabLogin.classList.remove('active');
+                signupForm.style.display = 'block';
+                loginForm.style.display = 'none';
+                footerToggleText.textContent = "Already have an account?";
+                footerToggleLink.textContent = "Sign in";
+                authAlert.style.display = 'none';
+            }
+
+            tabLogin.addEventListener('click', showLogin);
+            tabSignup.addEventListener('click', showSignup);
+            footerToggleLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (loginForm.style.display !== 'none') {
+                    showSignup();
+                } else {
+                    showLogin();
+                }
+            });
+
+            // Handle Login submit
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value.trim();
+                const name = email.split('@')[0] || 'Student';
+                const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
+
+                localStorage.setItem('quizmaster_user', JSON.stringify({
+                    name: capitalized,
+                    email: email
+                }));
+
+                authAlert.style.display = 'block';
+                authAlert.style.background = 'var(--success-bg)';
+                authAlert.style.color = '#6ee7b7';
+                authAlert.style.border = '1px solid var(--success-border)';
+                authAlert.textContent = '✓ Login successful! Redirecting to dashboard...';
+
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 700);
+            });
+
+            // Handle Signup submit
+            signupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('signupName').value.trim();
+                const email = document.getElementById('signupEmail').value.trim();
+
+                localStorage.setItem('quizmaster_user', JSON.stringify({
+                    name: name,
+                    email: email
+                }));
+
+                authAlert.style.display = 'block';
+                authAlert.style.background = 'var(--success-bg)';
+                authAlert.style.color = '#6ee7b7';
+                authAlert.style.border = '1px solid var(--success-border)';
+                authAlert.textContent = `✓ Account created for ${name}! Redirecting...`;
+
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 700);
+            });
+        });
+    </script>
+</body>
+
+</html>

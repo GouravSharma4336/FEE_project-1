@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizMaster - Configure Assessment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Top Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="logo"><span>🎯</span> QuizMaster</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="prepare.html">Study Notes</a></li>
+      <li><a href="quiz.html" class="active">Start Quiz</a></li>
+      <li><a href="leaderboard.html">Leaderboard</a></li>
+      <li><a href="history.html">History</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme">☀️</button>
+      <div id="authNavContainer">
+        <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Configurator -->
+  <main class="container">
+    <div class="mb">
+      <div class="header-badge">⚡ Test Engine Setup</div>
+      <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">Configure Your Assessment</h1>
+      <p class="sub-mb-content">Customize your practice track, difficulty level, pacing timer, and launch your test session.</p>
+    </div>
+
+    <!-- Quick Presets -->
+    <div class="preset-bar">
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Quick Presets:</span>
+      <button type="button" class="preset-btn" data-preset="rapid">⚡ 5-Min Warm-Up</button>
+      <button type="button" class="preset-btn" data-preset="mock">🎯 Standard Mock</button>
+      <button type="button" class="preset-btn" data-preset="aptitude">🧠 Aptitude Drill</button>
+      <button type="button" class="preset-btn" data-preset="react">⚛️ React Deep-Dive</button>
+    </div>
+
+    <form action="arena.html" method="GET" id="assessmentForm" class="config-grid">
+      <!-- Left: Form Controls -->
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <!-- Step 1: Topic Selection -->
+        <div class="card">
+          <h3>1. Select Subject Track</h3>
+          <div class="choice-pills">
+            <label class="choice-pill"><input type="radio" name="subject" value="mixed" checked><span>🌐 Mixed Tech Drill</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="html"><span>📄 HTML5 & Semantics</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="css"><span>🎨 CSS3 & Layouts</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="javascript"><span>⚡ Modern JavaScript</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="react"><span>⚛️ React Architecture</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="oops"><span>🧩 OOPs & Software</span></label>
+            <label class="choice-pill"><input type="radio" name="subject" value="logic_reasoning"><span>📊 Logic & Aptitude</span></label>
+          </div>
+        </div>
+
+        <!-- Step 2: Difficulty Level -->
+        <div class="card">
+          <h3>2. Difficulty Level</h3>
+          <div class="choice-pills">
+            <label class="choice-pill"><input type="radio" name="difficulty" value="mixed" checked><span>Mixed Standard</span></label>
+            <label class="choice-pill"><input type="radio" name="difficulty" value="easy"><span>Easy (Foundational)</span></label>
+            <label class="choice-pill"><input type="radio" name="difficulty" value="medium"><span>Medium (Interview)</span></label>
+            <label class="choice-pill"><input type="radio" name="difficulty" value="hard"><span>Hard (Advanced)</span></label>
+          </div>
+        </div>
+
+        <!-- Step 3: Question Volume -->
+        <div class="card">
+          <h3>3. Question Volume</h3>
+          <div class="choice-pills">
+            <label class="choice-pill"><input type="radio" name="question_count" value="5"><span>5 Questions</span></label>
+            <label class="choice-pill"><input type="radio" name="question_count" value="10" checked><span>10 Questions</span></label>
+            <label class="choice-pill"><input type="radio" name="question_count" value="15"><span>15 Questions</span></label>
+            <label class="choice-pill"><input type="radio" name="question_count" value="20"><span>20 Questions</span></label>
+          </div>
+        </div>
+
+        <!-- Step 4: Pacing & Timer Mode -->
+        <div class="card">
+          <h3>4. Pacing & Timer Model</h3>
+          <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; font-weight: 600; cursor: pointer;">
+              <input type="radio" name="timer_mode" value="per_question" checked> Per-Question Countdown
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; font-weight: 600; cursor: pointer;">
+              <input type="radio" name="timer_mode" value="total_test"> Total Test Clock
+            </label>
+          </div>
+          <div id="perQuestionOptions" class="choice-pills">
+            <label class="choice-pill"><input type="radio" name="per_q_time" value="30"><span>30s / Question</span></label>
+            <label class="choice-pill"><input type="radio" name="per_q_time" value="60" checked><span>60s / Question</span></label>
+            <label class="choice-pill"><input type="radio" name="per_q_time" value="90"><span>90s / Question</span></label>
+            <label class="choice-pill"><input type="radio" name="per_q_time" value="0"><span>Untimed Practice</span></label>
+          </div>
+          <div id="totalTimeOptions" class="choice-pills" style="display: none;">
+            <label class="choice-pill"><input type="radio" name="total_test_time" value="10"><span>10 Minutes</span></label>
+            <label class="choice-pill"><input type="radio" name="total_test_time" value="15" checked><span>15 Minutes</span></label>
+            <label class="choice-pill"><input type="radio" name="total_test_time" value="20"><span>20 Minutes</span></label>
+          </div>
+        </div>
+
+        <!-- Step 5: QuizAPI Key (Optional) -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h3 style="margin-bottom: 0;">5. Live API Key (Optional)</h3>
+            <span id="apiKeyStatusBadge" style="font-size: 0.78rem; font-weight: 700; color: var(--primary);">Live API Mode</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">Questions are fetched live. Enter your QuizAPI key or leave empty for free public questions.</p>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" id="quizApiKeyInput" name="api_key" class="form-control" placeholder="Paste QuizAPI.io Key (optional)">
+            <button type="button" class="btn btn-outline btn-sm" id="saveApiKeyBtn">Save Key</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Live Summary Sidebar -->
+      <aside class="summary-card">
+        <h3 style="margin-bottom: 1rem;">📋 Assessment Summary</h3>
+        <div class="summary-item"><span>Track:</span><span id="summarySubject">Mixed Tech Drill</span></div>
+        <div class="summary-item"><span>Difficulty:</span><span id="summaryDifficulty">Mixed Standard</span></div>
+        <div class="summary-item"><span>Questions:</span><span id="summaryCount">10 Questions</span></div>
+        <div class="summary-item"><span>Pacing:</span><span id="summaryPacing">60s / question</span></div>
+        <div class="summary-item"><span>API Mode:</span><span id="summaryApiMode" style="color: var(--primary);">Live API (Active)</span></div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; padding: 0.8rem; font-size: 1rem;">
+          Launch Assessment →
+        </button>
+      </aside>
+    </form>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="prepare.html">Study Notes</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="history.html">History</a>
+    </div>
+    <p>© 2026 QuizMaster. Ready for Vercel Deployment.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum &amp; Video Preparation - QuizMaster Pro</title>
+    <meta name="description" content="Review foundational video lectures, walkthroughs, and topic checklists before starting your timed assessment drill.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Top Sticky Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">🎯</span> Quiz<span>Master</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="prepare.html" class="active">Study Notes</a></li>
+            <li><a href="quiz.html">Start Quiz</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="history.html">History</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">☀️</button>
+            <div id="authNavContainer">
+                <a href="login.html" class="btn btn-outline">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <section class="mb">
+        <div class="main-box">
+            <div class="mb-content">
+                <div class="header-badge">
+                    <span>📚</span> Concept Prep &amp; Video Hub
+                </div>
+                <h1>
+                    Placement Preparation &amp; Video Hub<br>
+                    <span>Master Core Concepts Before Testing</span>
+                </h1>
+                <p class="sub-mb-content">
+                    Review foundational lectures, step-by-step walkthroughs, and key topic checklists before configuring your timed assessment drill.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search & Category Filter Bar -->
+    <div class="filter-search-wrap">
+        <div class="filter-pills">
+            <button type="button" class="filter-btn active" data-filter="all">All Topics (6)</button>
+            <button type="button" class="filter-btn" data-filter="frontend">Frontend Web (3)</button>
+            <button type="button" class="filter-btn" data-filter="framework">Frameworks &amp; React (1)</button>
+            <button type="button" class="filter-btn" data-filter="core">Software Design &amp; OOP (1)</button>
+            <button type="button" class="filter-btn" data-filter="aptitude">Aptitude &amp; Logic (1)</button>
+        </div>
+        <div class="search-box-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="videoSearchInput" placeholder="Search topics, keywords..." aria-label="Search study topics">
+        </div>
+    </div>
+
+    <!-- Video Embeds Grid -->
+    <main class="curriculum-grid">
+        
+        <!-- Track 1: HTML5 -->
+        <div class="video-card" data-category="frontend web html">
+            <div class="video-frame-wrap">
+                <iframe src="https://www.youtube-nocookie.com/embed/kUMe1FH4CHE" title="HTML Crash Course for Beginners" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="video-content">
+                <div class="video-meta">
+                    <span class="topic-tag">HTML5 &amp; Semantics</span>
+                    <span class="duration-tag">⏱️ 60 mins</span>
+                </div>
+                <h3>HTML5 Semantic Structuring</h3>
+                <p>Master page landmarks (&lt;main&gt;, &lt;article&gt;, &lt;nav&gt;), standard form validation, accessible ARIA attributes, and SEO standards.</p>
+                <ul class="checklist">
+                    <li>Semantic vs Non-Semantic Elements</li>
+                    <li>Form Validation &amp; Input Types</li>
+                    <li>SEO Tags &amp; Accessibility (ARIA)</li>
+                </ul>
+                <a href="quiz.html?subject=html" class="video-cta">Test HTML5 Knowledge →</a>
+            </div>
+        </div>
+
+        <!-- Track 2: CSS3 -->
+        <div class="video-card" data-category="frontend web css">
+            <div class="video-frame-wrap">
+                <iframe src="https://www.youtube-nocookie.com/embed/1Rs2ND1ryYc" title="CSS Tutorial - Zero to Hero" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="video-content">
+                <div class="video-meta">
+                    <span class="topic-tag">CSS3 &amp; Layouts</span>
+                    <span class="duration-tag">⏱️ 90 mins</span>
+                </div>
+                <h3>CSS3 Flexbox &amp; CSS Grid</h3>
+                <p>Learn layout mechanisms, box-sizing models, CSS specificity calculations, and responsive media query breakpoints.</p>
+                <ul class="checklist">
+                    <li>Flexbox Alignment &amp; Axis Control</li>
+                    <li>CSS Grid Areas &amp; Minmax</li>
+                    <li>Specificity &amp; Cascade Hierarchy</li>
+                </ul>
+                <a href="quiz.html?subject=css" class="video-cta">Test CSS3 Knowledge →</a>
+            </div>
+        </div>
+
+        <!-- Track 3: Modern JS -->
+        <div class="video-card" data-category="frontend core js javascript">
+            <div class="video-frame-wrap">
+                <iframe src="https://www.youtube-nocookie.com/embed/W6NZfCO5SIk" title="JavaScript Tutorial for Beginners" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="video-content">
+                <div class="video-meta">
+                    <span class="topic-tag">JavaScript (ES6+)</span>
+                    <span class="duration-tag">⏱️ 100 mins</span>
+                </div>
+                <h3>Modern JavaScript Fundamentals</h3>
+                <p>Deep dive into JavaScript runtime, closures, event loop microtasks, async/await promises, and prototypal inheritance.</p>
+                <ul class="checklist">
+                    <li>Execution Context &amp; Scope Chains</li>
+                    <li>Event Loop, Call Stack &amp; Web APIs</li>
+                    <li>Promises &amp; Async/Await Handling</li>
+                </ul>
+                <a href="quiz.html?subject=javascript" class="video-cta">Test JS Knowledge →</a>
+            </div>
+        </div>
+
+        <!-- Track 4: React -->
+        <div class="video-card" data-category="frontend framework react">
+            <div class="video-frame-wrap">
+                <iframe src="https://www.youtube-nocookie.com/embed/bMknfKXIFA8" title="React Course - Beginner's Tutorial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="video-content">
+                <div class="video-meta">
+                    <span class="topic-tag">React Architecture</span>
+                    <span class="duration-tag">⏱️ 120 mins</span>
+                </div>
+                <h3>React &amp; Component Lifecycle</h3>
+                <p>Covers JSX, component hierarchy, standard hooks (useState, useEffect, useMemo), virtual DOM diffing, and state management.</p>
+                <ul class="checklist">
+                    <li>Hooks &amp; State Immutability</li>
+                    <li>Virtual DOM &amp; Reconciliation</li>
+                    <li>Props Drilling &amp; Context API</li>
+                </ul>
+                <a href="quiz.html?subject=react" class="video-cta">Test React Knowledge →</a>
+            </div>
+        </div>
+
+        <!-- Track 5: OOPs -->
+        <div class="video-card" data-category="core oops software design">
+            <div class="video-frame-wrap">
+                <iframe src="https://www.youtube-nocookie.com/embed/pTB0EiLXUC8" title="Object Oriented Programming Basics" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="video-content">
+                <div class="video-meta">
+                    <span class="topic-tag">OOP &amp; Design</span>
+                    <span class="duration-tag">⏱️ 75 mins</span>
+                </div>
+                <h3>Object-Oriented Programming (OOP)</h3>
+                <p>Understand the 4 core pillars of OOP (Encapsulation, Abstraction, Inheritance, Polymorphism) and standard SOLID principles.</p>
+                <ul class="checklist">
+                    <li>Encapsulation &amp; Data Hiding</li>
+                    <li>Polymorphism (Overriding vs Overloading)</li>
+                    <li>SOLID Architecture Principles</li>
+                </ul>
+                <a href="quiz.html?subject=oops" class="video-cta">Test OOP Knowledge →</a>
+            </div>
+        </div>
+
+        <!-- Track 6: Aptitude -->
+        <div class="video-card" data-category="aptitude recruitment math">
+            <div class="video-frame-wrap">
+                <iframe src="https://www.youtube-nocookie.com/embed/V8Vw4jF348Y" title="Quantitative Aptitude for Campus Placements" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="video-content">
+                <div class="video-meta">
+                    <span class="topic-tag">Campus Aptitude</span>
+                    <span class="duration-tag">⏱️ 90 mins</span>
+                </div>
+                <h3>Quantitative Aptitude &amp; Reasoning</h3>
+                <p>Campus recruitment focus: Speed-Distance-Time, Percentages, Profit &amp; Loss, Syllogisms, and Logical Deductions.</p>
+                <ul class="checklist">
+                    <li>Relative Speed &amp; Train Problems</li>
+                    <li>Profit, Loss &amp; Percentage Formulations</li>
+                    <li>Syllogisms &amp; Deductive Logic</li>
+                </ul>
+                <a href="quiz.html?subject=logic_reasoning" class="video-cta">Test Aptitude Knowledge →</a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Unified Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="brand-logo">
+                    <span class="logo-icon">🎯</span> QuizMaster Pro
+                </div>
+                <p>Curated curriculum video lectures and topic checklists for competitive test preparation.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="prepare.html">Study Notes</a>
+                <a href="quiz.html">Start Quiz</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="history.html">History</a>
+                <a href="login.html">Login</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 QuizMaster. Frontend Engineering (FEE) Project 2.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script src="script.js"></script>
+</body>
+
+</html>
